@@ -405,7 +405,7 @@ input{font-family:inherit;}
         <div class="um-table-wrap">
           <table class="um-table">
             <thead><tr>
-              <th>User</th><th>Contact</th><th>Status</th><th>Level</th><th>USD</th><th>MMK</th><th>User OTP</th><th>Joined</th><th>Actions</th>
+              <th>User</th><th>Contact</th><th>Status</th><th>Level</th><th>USD</th><th>User OTP</th><th>Joined</th><th>Actions</th>
             </tr></thead>
             <tbody id="reg-list"></tbody>
           </table>
@@ -884,13 +884,12 @@ function renderRegistrations(){
       d.id.toLowerCase().includes(q)
     );
   }
-  if(filtered.length===0){ body.innerHTML = '<tr><td colspan="9" class="empty-state">No requests in this filter.</td></tr>'; return; }
+  if(filtered.length===0){ body.innerHTML = '<tr><td colspan="8" class="empty-state">No requests in this filter.</td></tr>'; return; }
 
   body.innerHTML = filtered.map(d=>{
     const status = d.status || 'pending';
     const idNote = d.method==='phone' ? (d.phone||'—') : (d.email||'—');
     const usd = walletBalances[d.id] || 0;
-    const mmk = usd * (currentRates.usdMmk || 5000);
     const level = d.level || 'Standard';
     const otpCell = (status==='approved' && d.otpCode)
       ? `<span class="otp-reveal">${d.otpCode}</span>`
@@ -905,7 +904,6 @@ function renderRegistrations(){
       <td><span class="status-badge ${statusClass}">${status}</span></td>
       <td>${level}</td>
       <td>$${usd.toLocaleString()}</td>
-      <td>${Math.round(mmk).toLocaleString()} K</td>
       <td>${otpCell}</td>
       <td class="um-joined">${timeAgo(d.createdAt)}</td>
       <td>
